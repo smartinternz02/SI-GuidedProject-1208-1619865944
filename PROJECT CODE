@@ -1,0 +1,40 @@
+import wiotp.sdk.device
+import time
+import random
+myConfig = { 
+    "identity": {
+        "orgId": "vadk7x",
+        "typeId": "data",
+        "deviceId":"3456"
+    },
+    "auth": {
+        "token": "12345678"
+    }
+}
+
+def myCommandCallback(cmd):
+    print("Message received from IBM IoT Platform: %s" % cmd.data['command'])
+    i=cmd.data['command']
+    if i=='motoron':
+           print("Motor is on")
+    elif i=='motoroff':
+             print("motor is off")
+    elif i=='lighton':    
+             print("light is on")
+    elif i=='lightoff':
+              print("light is off")
+
+client = wiotp.sdk.device.DeviceClient(config=myConfig, logHandlers=None)
+client.connect()
+
+while True:
+    temp=random.randint(16,50)
+    hum=random.randint(10,100)
+    vib = random.randint(50,100)
+    curr = random.randint(5,30)
+    myData={'temperature':temp, 'humidity':hum,'vibration':vib , 'current':curr}
+    client.publishEvent(eventId="status", msgFormat="JSON", data=myData, qos=0, onPublish=None)
+    print("Published data Successfully: %s", myData)
+    client.commandCallback = myCommandCallback
+    time.sleep(2)
+client.disconnect()
