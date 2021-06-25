@@ -1,0 +1,1 @@
+[{"id":"13c744d5.3bfa0b","type":"http in","z":"c5aaa986.5f7118","name":"","url":"/command","method":"get","upload":false,"swaggerDoc":"","x":270,"y":460,"wires":[["7ae2d8df.0a76f8"]]}]
